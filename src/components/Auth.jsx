@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Cookies from 'universal-cookie/es6'
 import axios from 'axios'
 
-import signInImage from '../assets/signup.jpg'
+import signInImage from '../assets/purple.jpg'
 
 const cookies = new Cookies()
 
@@ -28,16 +28,16 @@ const Auth = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { fullName, username, password, phoneNumber, avatarURL } = form;
+        const { username, password, phoneNumber, avatarURL } = form;
 
-        const URL = 'http://localhost:5000/auth';
-        const { data: {token, userId, hashedPassword} } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
-            username, password, fullName, phoneNumber, avatarURL
+        const URL = 'https://classroom-rpl.herokuapp.com/auth';
+        const { data: {token, userId, hashedPassword, fullName} } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
+            username, password, fullName: form.fullName, phoneNumber, avatarURL
         });
 
         cookies.set('token', token);
-        cookies.set('fullName', fullName);
         cookies.set('username', username);
+        cookies.set('fullName', fullName);
         cookies.set('userId', userId);
 
         if(isSignup) {
@@ -97,7 +97,7 @@ const Auth = () => {
                     </form>
                     <div className="auth__form-container_fields-account">
                         <p>
-                            {isSignup ? "Already have an account?" : "Don't have an account?"}
+                            {isSignup ? "Already have an account? " : "Don't have an account? "}
                             <span onClick={switchMode}>
                                 {isSignup ? 'Sign In' : 'Sign Up'}
                             </span>
